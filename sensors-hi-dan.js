@@ -77,8 +77,8 @@ function sensor_poll() {
   
 		// sensed someone within zone, send to game page
 		if (d>=20 && d<=60) { 
-			window.location.href = "hi-dan.html";
-			break;
+			//window.location.href = "hi-dan.html";
+			$('#sonartext').text(d);
 		}
 		
 
