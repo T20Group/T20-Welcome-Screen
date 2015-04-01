@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Welcome to T20</title>
+<meta name = "viewport" content ="width=device-width, minimum-scale=1, maximum-scale=1">
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/reset.css" />
+
+<!-- JS -->
+<script src = "js/jquery-1.8.2.min.js"></script>
+
+</head>
+<body style="background: #d7003a;">
+
+
+
+<script type="text/javascript">
+$(function() {
+	var img = 'images/aprilfool/aprilfool' + Math.floor((Math.random() * 7) + 1) + '.jpg';
+	$('#target').attr('src', img);
+});
+	
+</script>
+
+<img id="target" src="images/hi-fysh.jpg" width="1920" height="1080">
+
+</body>
+
+</html>
