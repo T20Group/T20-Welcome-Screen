@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Welcome to T20</title>
+<meta name = "viewport" content ="width=device-width, minimum-scale=1, maximum-scale=1">
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/reset.css" />
+
+<!-- JS -->
+<script src = "js/jquery-1.8.2.min.js"></script>
+<script src = "js/jquery.indexeddb.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+		var request, db; 
+		
+		if(!window.indexedDB)
+		{
+			//console.log("Your Browser does not support IndexedDB");
+			alert('No index support');
+		}
+		else
+		{
+			request = window.indexedDB.open("testDB", 2);
+			request.onerror = function(event){
+				console.log("Error opening DB", event);
+			}
+			request.onupgradeneeded   = function(event){
+				console.log("Upgrading");
+				db = event.target.result;
+				var objectStore = db.createObjectStore("students", { keyPath : "rollNo" });
+			};
+			request.onsuccess  = function(event){
+				console.log("Success opening DB");
+				db = event.target.result;
+			}
+		}
+		
+		$("#getBtn").click(function(){
+			var rollNo = $("#rollno").val();
+			var request = db.transaction(["students"],"readwrite").objectStore("students").get(rollNo);
+			request.onsuccess = function(event){
+				$("#result").html("Name : "+request.result.name);    
+			};
+		});
+		
+		$("#updateBtn").click(function(){
+			var rollNo = $("#rollno").val();
+			var name = $("#name").val();
+			var transaction = db.transaction(["students"],"readwrite");
+			var objectStore = transaction.objectStore("students");
+			var request = objectStore.get(rollNo);
+			request.onsuccess = function(event){
+				$("#result").html("Updating : "+request.result.name + " to " + name);
+				request.result.name = name;
+				objectStore.put(request.result);
+			};
+		});
+	});
+</script>
+
+</head>
+<body style="background: #d7003a;">
+Hello
+<img src="images/welcome.jpg" width="1920" height="1080">
+
+</body>
+
+</html>
