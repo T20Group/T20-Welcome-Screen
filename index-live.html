@@ -24,20 +24,66 @@
 		}
 		else
 		{
-			request = window.indexedDB.open("testDB", 2);
+			request = window.indexedDB.open("daveDB", 1);
 			request.onerror = function(event){
 				console.log("Error opening DB", event);
 			}
 			request.onupgradeneeded   = function(event){
 				console.log("Upgrading");
 				db = event.target.result;
-				var objectStore = db.createObjectStore("students", { keyPath : "rollNo" });
+				var objectStore = db.createObjectStore("content", { keyPath : "id" });
+				
+				//add initial data
+				var line1 = $("#line1").val();
+				var line2 = $("#line2").val();
+				
+				var transaction = db.transaction(["content"],"readwrite");
+				transaction.oncomplete = function(event) {
+					console.log("Success :)");
+				};
+				
+				transaction.onerror = function(event) {
+					console.log("Error :(");
+				};  
+				var objectStore = transaction.objectStore("content");
+				
+				objectStore.add({id: '1', line1: line1, line2: line2});
 			};
 			request.onsuccess  = function(event){
 				console.log("Success opening DB");
 				db = event.target.result;
+				
+				var id = 1;
+				var request = db.transaction(["content"],"readwrite").objectStore("content").get(id);
+				request.onsuccess = function(event){
+					$("#line1").val(request.result.line1);
+					$("#line2").val(request.result.line2);   
+				};
 			}
 		}
+		
+	/*	var request = db.transaction(["content"],"readwrite").objectStore("content").get('1');
+			request.onsuccess = function(event){
+			$("#line1").val(request.result.line1);    
+		};*/
+		
+		$(".inputtext").focusout(function() {
+			
+						
+			var id = 1;
+			var line1 = $("#line1").val();
+			var line2 = $("#line2").val();
+			var transaction = db.transaction(["content"],"readwrite");
+			var objectStore = transaction.objectStore("content");
+			var request = objectStore.get(id);
+			request.onsuccess = function(event){
+				console.log("Updated DB");
+				request.result.line1 = line1;
+				request.result.line2 = line2;
+				objectStore.put(request.result);
+			};
+			
+		});
 		
 	/*	$("#getBtn").click(function(){
 			var rollNo = $("#rollno").val();
@@ -71,8 +117,8 @@ body, textarea, input {
 </head>
 <body style="background: #E20E4B;">
 <div>
-	<input id="line1" name="line1" value="Hello," style="background:none; font-size:110px; color:white; border:none; position:absolute; top:220px; left:57px; font-weight:bold; width:100%;" />
-    <textarea id="line2" name="line2" rows="2" style="background:none; border:none; color: white; font-size: 60px; left: 65px; position: absolute; top: 345px; width:100%;">Welcome to our new office.</textarea>
+	<input id="line1" class="inputtext" name="line1" value="Hey there," style="background:none; font-size:110px; color:white; border:none; position:absolute; top:220px; left:57px; font-weight:bold; width:100%;" />
+    <textarea id="line2" class="inputtext" name="line2" rows="2" style="background:none; border:none; color: white; font-size: 60px; left: 65px; position: absolute; top: 345px; width:100%;">Welcome to our new office.</textarea>
 </div>
 <img src="images/welcome-clean.png" width="1920" height="1080">
 
