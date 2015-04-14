@@ -14,8 +14,13 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
+		//indexedDB.deleteDatabase('daveDB');
+		
 		window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-		var request, db; 
+		var request, db, dbname, tablename; 
+		dbname = "daveDB";
+		tablename = "content";
+		rowNo = 1;
 		
 		if(!window.indexedDB)
 		{
@@ -24,20 +29,20 @@
 		}
 		else
 		{
-			request = window.indexedDB.open("daveDB", 1);
+			request = window.indexedDB.open(dbname, 1);
 			request.onerror = function(event){
 				console.log("Error opening DB", event);
 			}
 			request.onupgradeneeded   = function(event){
 				console.log("Upgrading");
 				db = event.target.result;
-				var objectStore = db.createObjectStore("content", { keyPath : "id" });
+				var objectStore = db.createObjectStore(tablename, { keyPath : "id" });
 				
 				//add initial data
-				var line1 = $("#line1").val();
+				/*var line1 = $("#line1").val();
 				var line2 = $("#line2").val();
 				
-				var transaction = db.transaction(["content"],"readwrite");
+				var transaction = db.transaction([tablename],"readwrite");
 				transaction.oncomplete = function(event) {
 					console.log("Success :)");
 				};
@@ -45,36 +50,46 @@
 				transaction.onerror = function(event) {
 					console.log("Error :(");
 				};  
-				var objectStore = transaction.objectStore("content");
+				var objectStore = transaction.objectStore(tablename);
 				
-				objectStore.add({id: '1', line1: line1, line2: line2});
+				objectStore.add({id: rowNo, line1: line1, line2: line2});*/
 			};
 			request.onsuccess  = function(event){
 				console.log("Success opening DB");
 				db = event.target.result;
 				
-				var id = 1;
-				var request = db.transaction(["content"],"readwrite").objectStore("content").get(id);
+				var id = rowNo;
+				var request = db.transaction([tablename],"readwrite").objectStore(tablename).get(id);
 				request.onsuccess = function(event){
 					$("#line1").val(request.result.line1);
 					$("#line2").val(request.result.line2);   
 				};
+					
+				var line1 = $("#line1").val();
+				var line2 = $("#line2").val();
+				
+				var transaction = db.transaction([tablename],"readwrite");
+				transaction.oncomplete = function(event) {
+					console.log("Success :)");
+				};
+				
+				transaction.onerror = function(event) {
+					console.log("Error :(");
+				};  
+				var objectStore = transaction.objectStore(tablename);
+				
+				objectStore.add({id: rowNo, line1: line1, line2: line2});
 			}
 		}
-		
-	/*	var request = db.transaction(["content"],"readwrite").objectStore("content").get('1');
-			request.onsuccess = function(event){
-			$("#line1").val(request.result.line1);    
-		};*/
 		
 		$(".inputtext").focusout(function() {
 			
 						
-			var id = 1;
+			var id = rowNo;
 			var line1 = $("#line1").val();
 			var line2 = $("#line2").val();
-			var transaction = db.transaction(["content"],"readwrite");
-			var objectStore = transaction.objectStore("content");
+			var transaction = db.transaction([tablename],"readwrite");
+			var objectStore = transaction.objectStore(tablename);
 			var request = objectStore.get(id);
 			request.onsuccess = function(event){
 				console.log("Updated DB");
