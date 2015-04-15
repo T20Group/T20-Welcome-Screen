@@ -46,6 +46,7 @@ var AgentAPI = function() {
 
 var POLL_INTERVAL = 800;
 var SENSOR_FLUCTUATING_TIME = 5000;
+var firstRun = true;
 
 //INIT SENSOR API
 var api = AgentAPI();
@@ -65,6 +66,11 @@ function sensor_poll() {
     
     var intents = JSON.parse(json).intents;
     
+    if(firstRun){
+      //just clearout on the first run so we don't trigger from old messages.
+      firstRun = false;
+      return;
+    } 
 
     for(var i=0; i < intents.length;i++) {
       if (intents[i].inrange) {
@@ -78,7 +84,7 @@ function sensor_poll() {
 		// sensed someone within zone, send to game page
 		if (d>=20 && d<=60) { 
 			//window.location.href = "hi-dan.html";
-			$('#sonartext').text(d);
+			$('#sonartext').prepend(d+'<br/>');
 		}
 		
 
