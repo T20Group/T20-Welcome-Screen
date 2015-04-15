@@ -107,4 +107,4 @@ function sensor_poll() {
  
 
 // START THE TIMEOUT LOOP
-sensor_poll_timeout();
+sensor_poll_timeout(2000);
