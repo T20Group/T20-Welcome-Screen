@@ -85,7 +85,7 @@ function sensor_poll() {
 		// sensed someone within zone, send to game page
 		if (d>=20 && d<=60) { 
 			//window.location.href = "hi-dan.html";
-			$('#sonartext').prepend('within range: '+d+'<br/>');
+			$('#sonartext').prepend('WITHIN range: '+d+'<br/>');
 		}
 		
 
@@ -96,7 +96,7 @@ function sensor_poll() {
         	//restartPlayer();
         	
         	// do nothing
-        	$('#sonartext').prepend('sensing still time out');
+        	$('#sonartext').prepend('sensing still time out<br/>');
         	
         }, SENSOR_FLUCTUATING_TIME);
 
