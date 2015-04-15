@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>Welcome to T20</title>
 <meta name = "viewport" content ="width=device-width, minimum-scale=1, maximum-scale=1">
 
@@ -10,96 +9,123 @@
 
 <!-- JS -->
 <script src = "js/jquery-1.8.2.min.js"></script>
-<script src = "js/jquery.indexeddb.js"></script>
+<script src = "js/Dexie.js"></script>
 
 <script type="text/javascript">
-	$(document).ready(function(){
+	
+		
+		//add hash to page reloads
+		window.location.hash = '';
+		
 		//clear DB
 		//indexedDB.deleteDatabase('daveDB');
 		
-		window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-		var request, db, dbname, tablename; 
-		dbname = "daveDB";
-		tablename = "content";
-		rowNo = 1;
+		var db = new Dexie("daveDB");
+		db.version(1).stores({
+			content: '++id,line1,line2,tstamp'
+		});
+
+		db.open();
 		
-		if(!window.indexedDB)
-		{
-			console.log("Your Browser does not support IndexedDB");
-			alert('No database support');
+		db.on("populate", function() {
+		// Init your DB with some default statuses:
+			console.log("Set initial data");
+			db.content.add({id: 1, line1: "Hello there,", line2: "Welcome to our new office."}).then(function() {
+				updateContent();
+			});
+		});
+
+		function updateContent() {
+			db.content.get(1).then(function(obj) {
+				//alert("updated");
+				console.log("line1:" + obj.line1 + " line2: "+obj.line2);
+				$("#line1").val(obj.line1);
+				$("#line2").val(obj.line2); 
+				
+			}).catch(function (error) {
+				// Log or display the error.
+				console.error(error);
+				//location.reload();
+				// Notice that when using a transaction, it's enough to catch
+				// the transaction Promise instead of each db operation promise.
+			});
 		}
-		else
-		{
-			request = window.indexedDB.open(dbname, 1);
-			request.onerror = function(event){
-				console.log("Error opening DB", event);
-			}
-			request.onupgradeneeded   = function(event){
-				console.log("Upgrading");
-				db = event.target.result;
-				var objectStore = db.createObjectStore(tablename, { keyPath : "id" });
-			};
-			request.onsuccess  = function(event){
-				console.log("Success opening DB");
-				db = event.target.result;
-				
-				//get data from db and populate textbox
-				var id = rowNo;
-				var request = db.transaction([tablename],"readwrite").objectStore(tablename).get(id);
-				request.onsuccess = function(event){
-					$("#line1").val(request.result.line1);
-					$("#line2").val(request.result.line2);   
-				};
-				
-				//add initial data to db - should really add a function to check if this already exists.
+		
+		function checkOnline() {
+			console.log("Checking for new data");
+			$.ajax({
+                type: "POST",
+      			dataType: "jsonp",
+                url: "http://davelive.com.au/admin/t20/welcomescreen/ajax.php",
+                success: function(data){
+                    console.log("Got new data");
+					db.content.get(1).then(function(obj) {
+						
+						var dbdate = new Date(obj.tstamp.replace(" ","T"));
+						var livedate = new Date(data['tstamp'].replace(" ","T"));
+						
+						console.log("comparing dates indexdb:"+ dbdate + " livedata:" + livedate);
+						
+						if (dbdate < livedate) {
+							console.log("Live data is newer, so updating");
+							db.content.update(1, {line1: data['line1'], line2: data['line2'], tstamp: data['tstamp']}).then(function() {
+								updateContent();
+							});
+						}
+					});
+					
+					
+                },
+				error:function(){
+					console.log("Error with ajax call");
+				}
+
+            }); // Ajax Call
+		}
+		
+		function dostuff() {
+			$(".inputtext").focusout(function() {
 				var line1 = $("#line1").val();
 				var line2 = $("#line2").val();
 				
-				var transaction = db.transaction([tablename],"readwrite");
-				transaction.oncomplete = function(event) {
-					console.log("Success :)");
-				};
+				var currentdate = new Date(); 
+				var datetime = currentdate.getFullYear() + "-" + ("0" + (currentdate.getMonth()+1)).slice(-2) + "-" + ("0" + currentdate.getDate()).slice(-2) + " " + ("0" + currentdate.getHours()).slice(-2) + ":" + ("0" + currentdate.getMinutes()).slice(-2) + ":" + ("0" + currentdate.getSeconds()).slice(-2);
 				
-				transaction.onerror = function(event) {
-					console.log("Error :(");
-				};  
-				var objectStore = transaction.objectStore(tablename);
-				
-				objectStore.add({id: rowNo, line1: line1, line2: line2});
-			}
-		}
-		
-		$(".inputtext").focusout(function() {	
-			var id = rowNo;
-			var line1 = $("#line1").val();
-			var line2 = $("#line2").val();
-			var transaction = db.transaction([tablename],"readwrite");
-			var objectStore = transaction.objectStore(tablename);
-			var request = objectStore.get(id);
-			request.onsuccess = function(event){
-				console.log("Updated DB");
-				request.result.line1 = line1;
-				request.result.line2 = line2;
-				objectStore.put(request.result);
-			};
+				db.content.update(1, {line1: line1, line2: line2, tstamp: datetime});
+				console.log("UPDATE line1:" + line1 + " line2: "+line2 + " tstamp:" + datetime);
+			});
 			
-		});
-		
-	});
+			$("#b_refresh").click(function() {
+				location.reload();
+			});
+			checkOnline();
+			updateContent();
+			
+		}
+	
 </script>
 
 <style>
 body, textarea, input {
 	font-family:Arial, Helvetica, sans-serif;
 }
+#b_refresh {
+	position:absolute;
+	display:block;
+	width:100px;
+	height:100px;
+	
+	right:0;
+}
 </style>
 
 </head>
-<body style="background: #E20E4B;">
+<body onLoad="dostuff();" style="background: #000000;">
 <div>
-	<input id="line1" class="inputtext" name="line1" value="Hey there," style="background:none; font-size:110px; color:white; border:none; position:absolute; top:220px; left:57px; font-weight:bold; width:100%;" />
-    <textarea id="line2" class="inputtext" name="line2" rows="2" style="background:none; border:none; color: white; font-size: 60px; left: 65px; position: absolute; top: 345px; width:100%;">Welcome to our new office.</textarea>
+	<input id="line1" class="inputtext" name="line1" value="" style="background:none; font-size:110px; color:white; border:none; position:absolute; top:220px; left:57px; font-weight:bold; width:1800px;" />
+    <textarea id="line2" class="inputtext" name="line2" rows="2" style="background:none; border:none; color: white; font-size: 60px; left: 65px; position: absolute; top: 345px; width:1800px;"></textarea>
 </div>
+<a href="#" id="b_refresh"></a>
 <img src="images/welcome-clean.png" width="1920" height="1080">
 
 </body>
