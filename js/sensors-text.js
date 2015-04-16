@@ -83,14 +83,14 @@ function sensor_poll() {
 		
 		$('#sonartext').prepend(d+'<br/>');
 		// sensed someone within zone, send to game page
-		if ( (d>=20 && d<=60) && firstRun==false ) { 
+		if ( (d>=40 && d<=60) && firstRun==false ) { 
 			//window.location.href = "index-sonar-next.html";
 			$('#sonartext').prepend('WITHIN range: '+d+'<br/>');
 			$('#touchme').animate(
 				{ opacity: 1 }, 200
 			);
 			$('#msg-holder').animate(
-				{opacity: .5}, 200
+				{opacity: .3}, 200
 			);
 			
 		}
