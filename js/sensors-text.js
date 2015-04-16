@@ -89,6 +89,9 @@ function sensor_poll() {
 			$('#touchme').animate(
 				{ opacity: 1 }, 200
 			);
+			$('#msg-holder').animate(
+				{opacity: .5}, 200
+			);
 			
 		}
 		
@@ -104,6 +107,10 @@ function sensor_poll() {
         	
         	$('#touchme').animate(
 				{opacity: 0}, 200
+			);
+
+        	$('#msg-holder').animate(
+				{opacity: 1}, 200
 			);
         	
         }, SENSOR_FLUCTUATING_TIME);
