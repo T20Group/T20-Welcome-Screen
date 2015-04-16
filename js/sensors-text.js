@@ -69,7 +69,7 @@ function sensor_poll() {
     if(firstRun){
       //just clearout on the first run so we don't trigger from old messages.
       firstRun = false;
-      return;
+      //return;
     } 
 
     for(var i=0; i < intents.length;i++) {
@@ -92,6 +92,8 @@ function sensor_poll() {
 			$('#msg-holder').animate(
 				{opacity: .3}, 200
 			);
+			
+			firstRun = true;
 			
 		}
 		
