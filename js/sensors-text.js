@@ -44,7 +44,7 @@ var AgentAPI = function() {
 
 //------------------------------------------
 
-var POLL_INTERVAL = 1000;
+var POLL_INTERVAL = 400;
 var SENSOR_FLUCTUATING_TIME = 2000;
 var firstRun = true;
 
@@ -72,7 +72,8 @@ function sensor_poll() {
       return;
     } 
 
-    for(var i=0; i < intents.length;i++) {
+//     for(var i=0; i < intents.length;i++) {
+	
       if (intents[0].inrange) {
         // in range
         // $(document).trigger('touchstart');
@@ -83,7 +84,7 @@ function sensor_poll() {
 		
 		$('#sonartext').prepend('intent 0: '+d+'<br/>');
 		// sensed someone within zone, send to game page
-		if ( (d>0 && d<=60) && firstRun==false ) { 
+		if ( (d>0 && d<=40) && firstRun==false ) { 
 			//window.location.href = "index-sonar-next.html";
 			$('#sonartext').prepend('sensor '+i+' WITHIN range: '+d+' pause<br/>');
 			$('#touchme').animate(
@@ -117,7 +118,8 @@ function sensor_poll() {
         }, SENSOR_FLUCTUATING_TIME);
 
       }
-    } 
+      
+//     } 
   });
   sensor_poll_timeout();
 }
