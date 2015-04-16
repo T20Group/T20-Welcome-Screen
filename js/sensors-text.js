@@ -83,7 +83,7 @@ function sensor_poll() {
 /*         $('#log').text("WE'RE IN RANGE ............ " + distance); */
         //startPlayer();
         
-		clearTimeout(window.sensingMovementStillTimeout);
+		
 		
 		$('#sonartext').prepend('intent 0: '+d+'<br/>');
 		// sensed someone within zone, send to game page
@@ -100,6 +100,9 @@ function sensor_poll() {
 			);
 			
 		} else {
+			
+			clearTimeout(window.sensingMovementStillTimeout);
+			
 			$('#touchme').animate(
 				{opacity: 0}, 200
 			);
