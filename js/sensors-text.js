@@ -81,7 +81,7 @@ function sensor_poll() {
 /*         $('#log').text("WE'RE IN RANGE ............ " + distance); */
         //startPlayer();
 		
-		$('#sonartext').prepend(d+'<br/>');
+		$('#sonartext').prepend('intent ' +i+': '+d+'<br/>');
 		// sensed someone within zone, send to game page
 		if ( (d>0 && d<=60) && firstRun==false ) { 
 			//window.location.href = "index-sonar-next.html";
