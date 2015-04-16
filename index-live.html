@@ -12,10 +12,6 @@
 <script src = "js/Dexie.js"></script>
 
 <script type="text/javascript">
-	
-		
-		//add hash to page reloads
-		window.location.hash = '';
 		
 		//clear DB
 		//indexedDB.deleteDatabase('daveDB');
@@ -30,7 +26,7 @@
 		db.on("populate", function() {
 		// Init your DB with some default statuses:
 			console.log("Set initial data");
-			db.content.add({id: 1, line1: "Hello there,", line2: "Welcome to our new office."}).then(function() {
+			db.content.add({id: 1, line1: "Hello there,", line2: "Welcome to our new office.", tstamp: 0}).then(function() {
 				updateContent();
 			});
 		});
@@ -52,17 +48,21 @@
 		}
 		
 		function checkOnline() {
-			console.log("Checking for new data");
+			console.log("Checking for new data online");
 			$.ajax({
                 type: "POST",
       			dataType: "jsonp",
                 url: "http://davelive.com.au/admin/t20/welcomescreen/ajax.php",
                 success: function(data){
-                    console.log("Got new data");
+                    console.log("Got live data");
 					db.content.get(1).then(function(obj) {
+						console.log("checking local data"+obj.tstamp);
 						
 						var dbdate = new Date(obj.tstamp.replace(" ","T"));
+						console.log("convert local date");
+						
 						var livedate = new Date(data['tstamp'].replace(" ","T"));
+						console.log("convert live date");
 						
 						console.log("comparing dates indexdb:"+ dbdate + " livedata:" + livedate);
 						
@@ -71,7 +71,11 @@
 							db.content.update(1, {line1: data['line1'], line2: data['line2'], tstamp: data['tstamp']}).then(function() {
 								updateContent();
 							});
+						} else {
+							console.log("Local data is newer, so use local");
+							updateContent();
 						}
+						
 					});
 					
 					
@@ -84,6 +88,7 @@
 		}
 		
 		function dostuff() {
+			
 			$(".inputtext").focusout(function() {
 				var line1 = $("#line1").val();
 				var line2 = $("#line2").val();
@@ -98,8 +103,9 @@
 			$("#b_refresh").click(function() {
 				location.reload();
 			});
-			checkOnline();
+			
 			updateContent();
+			checkOnline();
 			
 		}
 	
