@@ -44,8 +44,8 @@ var AgentAPI = function() {
 
 //------------------------------------------
 
-var POLL_INTERVAL = 400;
-var SENSOR_FLUCTUATING_TIME = 3000;
+var POLL_INTERVAL = 800;
+var SENSOR_FLUCTUATING_TIME = 5000;
 var firstRun = true;
 
 //INIT SENSOR API
@@ -69,7 +69,7 @@ function sensor_poll() {
     if(firstRun){
       //just clearout on the first run so we don't trigger from old messages.
       firstRun = false;
-      return;
+      //return;
     } 
 
     for(var i=0; i < intents.length;i++) {
@@ -83,15 +83,17 @@ function sensor_poll() {
 		
 		$('#sonartext').prepend(d+'<br/>');
 		// sensed someone within zone, send to game page
-		if ( (d>=20 && d<=60) && firstRun==false ) { 
+		if ( (d<=60) && firstRun==false ) { 
 			//window.location.href = "index-sonar-next.html";
 			$('#sonartext').prepend('WITHIN range: '+d+'<br/>');
 			$('#touchme').animate(
 				{ opacity: 1 }, 200
 			);
 			$('#msg-holder').animate(
-				{opacity: .5}, 200
+				{opacity: .3}, 200
 			);
+			
+			firstRun = true;
 			
 		}
 		
