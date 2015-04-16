@@ -44,8 +44,8 @@ var AgentAPI = function() {
 
 //------------------------------------------
 
-var POLL_INTERVAL = 400;
-var SENSOR_FLUCTUATING_TIME = 3000;
+var POLL_INTERVAL = 800;
+var SENSOR_FLUCTUATING_TIME = 5000;
 var firstRun = true;
 
 //INIT SENSOR API
@@ -83,7 +83,7 @@ function sensor_poll() {
 		
 		$('#sonartext').prepend(d+'<br/>');
 		// sensed someone within zone, send to game page
-		if ( (d>=40 && d<=60) && firstRun==false ) { 
+		if ( (d<=60) && firstRun==false ) { 
 			//window.location.href = "index-sonar-next.html";
 			$('#sonartext').prepend('WITHIN range: '+d+'<br/>');
 			$('#touchme').animate(
