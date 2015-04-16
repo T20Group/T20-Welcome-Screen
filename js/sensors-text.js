@@ -93,8 +93,6 @@ function sensor_poll() {
 				{opacity: .3}, 200
 			);
 			
-			firstRun = true;
-			
 		}
 		
 
