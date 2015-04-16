@@ -90,7 +90,7 @@ function sensor_poll() {
 				{ opacity: 1 }, 200
 			);
 			$('#msg-holder').animate(
-				{opacity: 0}, 200
+				{opacity: .5}, 200
 			);
 			
 		}
