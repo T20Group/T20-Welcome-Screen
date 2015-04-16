@@ -85,7 +85,7 @@ function sensor_poll() {
 		// sensed someone within zone, send to game page
 		if ( (d>0 && d<=60) && firstRun==false ) { 
 			//window.location.href = "index-sonar-next.html";
-			$('#sonartext').prepend('sensor '+i+' WITHIN range: '+d+' pause for 5 seconds<br/>');
+			$('#sonartext').prepend('sensor '+i+' WITHIN range: '+d+' pause<br/>');
 			$('#touchme').animate(
 				{ opacity: 1 }, 200
 			);
