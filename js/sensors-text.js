@@ -101,6 +101,10 @@ function sensor_poll() {
         	// do nothing
         	//$('#sonartext').prepend('sensing still time out<br/>');
         	
+        	$('#touchme').animate(
+				{opacity: 0}, 200
+			);
+        	
         }, SENSOR_FLUCTUATING_TIME);
 
       }
