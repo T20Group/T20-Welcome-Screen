@@ -73,7 +73,7 @@ function sensor_poll() {
     } 
 
     for(var i=0; i < intents.length;i++) {
-      if (intents[i].inrange) {
+      if (intents[0].inrange) {
         // in range
         // $(document).trigger('touchstart');
         var d = intents[i].reading;
