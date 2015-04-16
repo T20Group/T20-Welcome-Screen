@@ -116,7 +116,7 @@ function sensor_poll() {
         	//restartPlayer();
         	
         	// do nothing
-        	//$('#sonartext').prepend('sensing still time out<br/>');
+        	$('#sonartext').prepend('sensing still time out<br/>');
         	
         	        	
         }, SENSOR_FLUCTUATING_TIME);
