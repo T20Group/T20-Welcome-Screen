@@ -87,7 +87,10 @@ function sensor_poll() {
 			//window.location.href = "index-sonar-next.html";
 			$('#sonartext').prepend('WITHIN range: '+d+'<br/>');
 			$('#touchme').animate(
-				{opacity: 1}, 200
+				{ opacity: 1 }, 200
+			);
+			$('body').animate(
+				{ background-color: "#"+d }, 500
 			);
 		}
 		
