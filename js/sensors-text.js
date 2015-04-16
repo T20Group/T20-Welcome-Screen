@@ -88,7 +88,7 @@ function sensor_poll() {
 		// if ( (d>0 && d<=40) && firstRun==false ) { 
 		if (d>0 && d<=40) {
 			
-	        clearTimeout(window.sensingMovementStillTimeout);
+	       
 	        
 			//window.location.href = "index-sonar-next.html";
 			$('#sonartext').prepend('sensor '+i+' WITHIN range: '+d+' pause<br/>');
@@ -98,6 +98,8 @@ function sensor_poll() {
 			$('#msg-holder').animate(
 				{opacity: .3}, 200
 			);
+			
+			clearTimeout(window.sensingMovementStillTimeout);
 			
 		} else {
 			$('#touchme').animate(
