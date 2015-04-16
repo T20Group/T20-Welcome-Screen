@@ -115,9 +115,15 @@ function sensor_poll() {
         	//$('#log').text("trigger a restart");
         	//restartPlayer();
         	
-        	// do nothing
-        	$('#sonartext').prepend('sensing still time out<br/>');
-        	
+        	// do nothing or clear triggered action
+        	// $('#sonartext').prepend('sensing still time out<br/>');
+        	$('#touchme').animate(
+				{opacity: 0}, 200
+			);
+
+        	$('#msg-holder').animate(
+				{opacity: 1}, 200
+			);
         	        	
         }, SENSOR_FLUCTUATING_TIME);
 
