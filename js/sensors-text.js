@@ -93,6 +93,14 @@ function sensor_poll() {
 				{opacity: .3}, 200
 			);
 			
+		} else {
+			$('#touchme').animate(
+				{opacity: 0}, 200
+			);
+
+        	$('#msg-holder').animate(
+				{opacity: 1}, 200
+			);
 		}
 		
 
@@ -105,14 +113,7 @@ function sensor_poll() {
         	// do nothing
         	//$('#sonartext').prepend('sensing still time out<br/>');
         	
-        	$('#touchme').animate(
-				{opacity: 0}, 200
-			);
-
-        	$('#msg-holder').animate(
-				{opacity: 1}, 200
-			);
-        	
+        	        	
         }, SENSOR_FLUCTUATING_TIME);
 
       }
