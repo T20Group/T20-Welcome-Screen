@@ -125,4 +125,4 @@ function sensor_poll() {
  
 
 // START THE TIMEOUT LOOP
-sensor_poll_timeout(2000);
+sensor_poll_timeout(SENSOR_FLUCTUATING_TIME);
