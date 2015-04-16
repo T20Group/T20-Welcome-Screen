@@ -78,13 +78,15 @@ function sensor_poll() {
         // in range
         // $(document).trigger('touchstart');
         var d = intents[0].reading;
-        clearTimeout(window.sensingMovementStillTimeout);
 /*         $('#log').text("WE'RE IN RANGE ............ " + distance); */
         //startPlayer();
 		
 		$('#sonartext').prepend('intent 0: '+d+'<br/>');
 		// sensed someone within zone, send to game page
 		if ( (d>0 && d<=40) && firstRun==false ) { 
+			
+	        clearTimeout(window.sensingMovementStillTimeout);
+	        
 			//window.location.href = "index-sonar-next.html";
 			$('#sonartext').prepend('sensor '+i+' WITHIN range: '+d+' pause<br/>');
 			$('#touchme').animate(
