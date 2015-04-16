@@ -82,14 +82,14 @@ function sensor_poll() {
         var d = intents[0].reading;
 /*         $('#log').text("WE'RE IN RANGE ............ " + distance); */
         //startPlayer();
+        
+		clearTimeout(window.sensingMovementStillTimeout);
 		
 		$('#sonartext').prepend('intent 0: '+d+'<br/>');
 		// sensed someone within zone, send to game page
 		// if ( (d>0 && d<=40) && firstRun==false ) { 
 		if (d>0 && d<=40) {
 			
-	       
-	        
 			//window.location.href = "index-sonar-next.html";
 			$('#sonartext').prepend('sensor '+i+' WITHIN range: '+d+' pause<br/>');
 			$('#touchme').animate(
@@ -98,8 +98,6 @@ function sensor_poll() {
 			$('#msg-holder').animate(
 				{opacity: .3}, 200
 			);
-			
-			clearTimeout(window.sensingMovementStillTimeout);
 			
 		} else {
 			$('#touchme').animate(
