@@ -90,7 +90,7 @@ function sensor_poll() {
 				{ opacity: 1 }, 200
 			);
 			$('body').animate(
-				{ background-color: "#"+d }, 500
+				{ backgroundColor: "#"+d }, 500
 			);
 		}
 		
