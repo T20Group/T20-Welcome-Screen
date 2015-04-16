@@ -76,8 +76,8 @@ function sensor_poll() {
       if (intents[i].inrange) {
         // in range
         // $(document).trigger('touchstart');
-        var d = intents[i].reading;
-        //clearTimeout(window.sensingMovementStillTimeout);
+        var d = i + '.' + intents[i].reading;
+        clearTimeout(window.sensingMovementStillTimeout);
 /*         $('#log').text("WE'RE IN RANGE ............ " + distance); */
         //startPlayer();
 		
