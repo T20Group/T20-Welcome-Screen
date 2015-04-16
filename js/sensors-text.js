@@ -65,14 +65,12 @@ function sensor_poll() {
     //$('#log').text("polled..", json); 
     
     var intents = JSON.parse(json).intents;
-/*
     
     if(firstRun){
       //just clearout on the first run so we don't trigger from old messages.
       firstRun = false;
       return;
     } 
-*/
 
 //     for(var i=0; i < intents.length;i++) {
 	
