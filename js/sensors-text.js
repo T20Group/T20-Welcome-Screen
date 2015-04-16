@@ -99,6 +99,7 @@ function sensor_poll() {
 			
 		} else {
 			
+/*
 			$('#touchme').animate(
 				{opacity: 0}, 200
 			);
@@ -106,6 +107,7 @@ function sensor_poll() {
         	$('#msg-holder').animate(
 				{opacity: 1}, 200
 			);
+*/
 		}
 		
 
