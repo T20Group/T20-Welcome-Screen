@@ -89,9 +89,7 @@ function sensor_poll() {
 			$('#touchme').animate(
 				{ opacity: 1 }, 200
 			);
-			$('body').animate(
-				{ backgroundColor: "#"+d }, 500
-			);
+			
 		}
 		
 
