@@ -93,7 +93,7 @@
 				var line1 = $("#line1").val();
 				var line2 = $("#line2").val();
 				
-				var currentdate = new Date(); 
+				var currentdate = new Date();
 				var datetime = currentdate.getFullYear() + "-" + ("0" + (currentdate.getMonth()+1)).slice(-2) + "-" + ("0" + currentdate.getDate()).slice(-2) + " " + ("0" + currentdate.getHours()).slice(-2) + ":" + ("0" + currentdate.getMinutes()).slice(-2) + ":" + ("0" + currentdate.getSeconds()).slice(-2);
 				
 				db.content.update(1, {line1: line1, line2: line2, tstamp: datetime});
@@ -106,6 +106,10 @@
 			
 			updateContent();
 			checkOnline();
+			
+			var currentdate = new Date();
+			var datetime = currentdate.getFullYear() + "-" + ("0" + (currentdate.getMonth()+1)).slice(-2) + "-" + ("0" + currentdate.getDate()).slice(-2) + " " + ("0" + currentdate.getHours()).slice(-2) + ":" + ("0" + currentdate.getMinutes()).slice(-2) + ":" + ("0" + currentdate.getSeconds()).slice(-2);
+			$('#currTime').html(datetime);
 			
 		}
 	
@@ -123,6 +127,12 @@ body, textarea, input {
 	
 	right:0;
 }
+#currTime {
+	position:absolute;
+	top:5px;
+	left:5px;
+	font-size:10px;
+}
 </style>
 
 </head>
@@ -132,6 +142,7 @@ body, textarea, input {
     <textarea id="line2" class="inputtext" name="line2" rows="2" style="background:none; border:none; color: white; font-size: 60px; left: 65px; position: absolute; top: 345px; width:1800px;"></textarea>
 </div>
 <a href="#" id="b_refresh"></a>
+<div id="currTime">A</div>
 <img src="images/welcome-clean.png" width="1920" height="1080">
 
 </body>
