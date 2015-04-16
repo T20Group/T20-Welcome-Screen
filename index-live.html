@@ -115,6 +115,10 @@
 				location.reload();
 			});
 			
+			$("#b_showlog").click(function() {
+				$('#logtext').toggleClass('hide');
+			});
+			
 			updateContent();
 			checkOnline();
 			
@@ -140,8 +144,19 @@ body, textarea, input {
 	display:block;
 	width:100px;
 	height:100px;
+	bottom:0;
+	right:0;
+	z-index:100;
+}
+#b_showlog {
+	position:absolute;
+	display:block;
+	width:100px;
+	height:100px;
 	
 	right:0;
+	
+	z-index:100;
 }
 #logtext {
 	position:absolute;
@@ -149,6 +164,9 @@ body, textarea, input {
 	right:5px;
 	font-size:10px;
 	text-align:right;
+}
+.hide {
+	display:none;
 }
 </style>
 
@@ -160,7 +178,8 @@ body, textarea, input {
         <textarea id="line2" class="inputtext" name="line2" rows="2" style="background:none; border:none; color: white; font-size: 60px; left: 65px; position: absolute; top: 345px; width:1800px;"></textarea>
     </div>
     <a href="#" id="b_refresh"></a>
-    <div id="logtext"></div>
+    <a href="#" id="b_showlog"></a>
+    <div id="logtext" class="hide"></div>
     <img src="images/welcome-clean.png" width="1920" height="1080">
     </div>
 </body>
