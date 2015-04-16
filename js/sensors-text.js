@@ -44,7 +44,7 @@ var AgentAPI = function() {
 
 //------------------------------------------
 
-var POLL_INTERVAL = 200;
+var POLL_INTERVAL = 1000;
 var SENSOR_FLUCTUATING_TIME = 2000;
 var firstRun = true;
 
