@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Simonds TV</title>
+<meta name = "viewport" content ="width=device-width, minimum-scale=1, maximum-scale=1">
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/reset.css" />
+
+<!-- jQuery -->
+<script src="js/jquery-1.8.2.min.js" type="text/javascript"></script>
+<script src="js/isotope.pkgd.min.js" type="text/javascript"></script>
+<script src="js/packery-mode.pkgd.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+$(function() {
+	var $container = $('.isotope');
+	$container.isotope({
+		itemSelector: '.container',
+		layoutMode: 'packery',
+		packery: {
+		  columnWidth: 320,
+		  isFitWidth: true,
+		  gutter: 0
+		},
+		transitionDuration: '1s'
+	});
+	
+	var $addC = $('#add');
+	$addC.click(function() {
+		
+		var $elems = getItemElement();
+		
+		$container.prepend($elems).isotope('prepended', $elems);
+		//alert('ok');
+		
+		$(this).text('omg');
+	});
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	// VARIABLES
+	
+	var totalChange = 0; 							// used for pageCounter() to count images before refreshing
+													
+													
+	// SETTINGS VARIABLES							
+	var max_img_padding = 8;						// MAX 0000 padding for image up to 4 digits ( 9999 ) + 4 extension [.jpg];
+	var img_gen_time = 5000;						// SPEED generate img every miliseconds
+	var refresh_after = 50; 						// maximum image shown before refreshing 
+	var photos_on_page = 13; 						// maximum photos shown on page ( 10 - 20 )  * 6x3 block
+													
+	var adsFrequency = 12;							// show supplier image every 12 pictures
+													
+													
+	// IMAGES VARIABLES								
+	var show_album = "images/farewell-roni/";		// album path eg. [folder] / [folder] / [filename.jpg]
+	var total_img = 96;							// total images in [folder]
+	var total_static_img = 3;						// total images in [static folder]
+													
+	// SUPPLIER IMAGES								
+	var supplier_album = "SUPPLIER-IMAGES/";		// album path for supplier images
+	var total_supplier_img = 84;					// total images in [static folder]
+													
+													
+	// declare new array							
+	var shown_img_array = new Array(); 				// array container to check repeated images
+	var shown_img_array_limit = 13;					// limit on how much the image MUST NOT repeat ( 10 - 50 )
+
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+
+	function genImage() {
+		
+		// run page counter;
+		var $counter = pageCounter();
+		
+		var $elems = getItemElement();
+		$container.prepend($elems).isotope('prepended', $elems);
+		//alert('ok');
+		
+		
+	};
+	
+	function pageCounter() {
+		// interval counter
+		totalChange = totalChange+1;
+		
+		// reload page
+		if (totalChange>=refresh_after) {
+			$('#fancyCover').fadeIn(3000, function() {
+				location.reload(); // just reload
+			});
+		}
+		
+		//$addC.text(totalChange + ' v2302');
+		
+	}
+	
+
+	
+	// TO DO LATER
+	// create auto gen initial image
+	// create auto animate initial images
+	// create seamless reload experience with random page swap effect (if possible)
+	
+	
+	// make <div class="item width# height#" />
+	function getItemElement() {
+		
+		var img_loc = showDynamicShape();
+				var $item = $('<div class="container" style="background-image: url('+img_loc+');"></div>');
+				
+		console.log(img_loc);
+		
+		// add RANDOM width and height class
+		var wRand = Math.random();
+		var hRand = Math.random();
+		var widthClass = wRand > 0.85 ? 'width3' : wRand > 0.5 ? 'width2' : 'width1';
+		var heightClass = hRand > 0.85 ? 'height3' : hRand > 0.5 ? 'height2' : 'height1';	
+		
+		$item.addClass( widthClass ).addClass( heightClass );
+		
+		// remove last image container
+		$('.container').last().remove();
+		// console.log($('.container').length);
+		
+		return $item;
+	
+		
+	}
+	
+	function showDynamicShape() {
+		var img_loc = randomGenerateImg();
+		
+		// dupe check
+		while ( shown_img_array.indexOf(img_loc)>=0 ) { // repeat function until no duplicate
+			//console.log('found ' + img_loc);
+			var img_loc = randomGenerateImg();
+		}
+		
+		//console.log('show ' + img_loc);
+		
+		noImageDupe(img_loc);
+		
+		return img_loc;
+	}
+	
+	function showStaticShape() {
+		var img_loc = randomStaticImg();
+		
+		// dupe check
+		while ( shown_img_array.indexOf(img_loc)>=0 ) { // repeat function until no duplicate
+			//console.log('found ' + img_loc);
+			var img_loc = randomStaticImg();
+		}
+		
+		//console.log('show ' + img_loc);
+		
+		noImageDupe(img_loc);
+		
+		return img_loc;
+	}
+	
+	function showSupplierImages() {
+		var img_loc = randomSupplierImg();
+		
+		// dupe check
+		while ( shown_img_array.indexOf(img_loc)>=0 ) { // repeat function until no duplicate
+			//console.log('found ' + img_loc);
+			var img_loc = randomStaticImg();
+		}
+		
+		//console.log('show ' + img_loc);
+		
+		noImageDupe(img_loc);
+		
+		return img_loc;
+	}
+	
+	function noImageDupe(new_image) {
+		shown_img_array.push(new_image); // add img to array
+		
+		//console.log(shown_img_array.length);
+		
+		if(shown_img_array.length==shown_img_array_limit) { // array cache limit	
+			shown_img_array.shift(); // remove first item off array	
+			//console.log('removed');
+			
+		}
+
+	}
+	
+	function randomGenerateImg() {
+		
+		var img = Math.floor((Math.random() * total_img) + 1) + '.jpg';
+		var img_padded = pad(img, max_img_padding);
+		var img_loc = show_album+img_padded;
+		
+		return img_loc;
+	}
+	
+	function randomStaticImg() {
+		
+		var img = Math.floor((Math.random() * total_static_img) + 1) + '.jpg';
+		var img_loc = "images/"+img;
+		
+		return img_loc;
+	}
+	
+	function randomSupplierImg() {
+		
+		var img = Math.floor((Math.random() * total_supplier_img) + 1) + '.jpg';
+		var img_padded = pad(img, max_img_padding);
+		var img_loc = supplier_album+img_padded;
+		
+		return img_loc;
+	}
+		
+	// pad filename with 0
+	function pad (str, max) {
+	  return str.length < max ? pad("0" + str, max) : str;
+	}
+	
+	function genContainers() {
+		$('.isotope').append('<div class="container"></div>');
+	}
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	// initiate generate image
+	window.setInterval(genImage, img_gen_time);
+	
+	// generate n images on start
+	for (n=0; n<=photos_on_page; n++) {
+		genContainers();
+		genImage();		
+	}
+	
+	$('#fancyCover').fadeOut(1000);
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+});
+</script>
+
+<style type="text/css">
+html { background: #fff; }
+#main { width: 1920px; height: 1080px; overflow: hidden; padding: 0 5px; }
+.marker { border: 1px solid #ccc; }
+
+
+#masonry-fit-width .isotope {
+  margin: 0 auto;
+}
+
+.isotope {
+  background: #fff;
+  max-width: 1920px;
+  max-height: 1080px;
+}
+
+/* clear fix */
+.isotope:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.container { float: left; border: 20px solid white;
+    border-radius: 30px; 
+    background-position: center; background-repeat: no-repeat; background-size:cover;
+}
+.container span.watermark { color: rgba(255, 255, 255, 0.5); position: absolute; bottom: 30px; right: 30px; font-size: 40px; }
+
+
+/* horizontal */
+.container.width1 { width: 280px; }
+.container.width2 { width: 600px; }
+.container.width3 { width: 1880px; }
+
+/* vertical */
+.container.height1 { height: 320px; }
+.container.height2 { height: 680px; }
+.container.height3 { height: 1040px; }
+
+
+</style>
+
+</head>
+<body>
+
+
+
+<div id="holder" style="width: 1920px; height: 1080px; overflow: hidden; border: 0px solid #fff;">	<!-- borders to adjust padding -->
+
+	<div class="isotope"></div>
+
+</div>
+
+<div id="fancyCover" style="width: 100%; height: 100%; position: fixed; top: 0; right: 0; background: #fff; "></div>
+<div id="border" style="width: 1920px; height: 1080px; position: fixed; top: 0; left: 0; overflow: hidden; background: transparent url(images/border.png) no-repeat center center; "></div>
+
+<button id="add" style="color: #333; position: fixed; top: 0; right: 0; border: none; display: ;">
+add
+</button>
+
+
+
+</body>
+</html> 
