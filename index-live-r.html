@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to T20</title>
+<meta name = "viewport" content ="width=device-width, minimum-scale=1, maximum-scale=1">
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/reset.css" />
+
+<!-- JS -->
+<script src = "js/jquery-1.8.2.min.js"></script>
+<script src = "js/Dexie.js"></script>
+
+<script type="text/javascript">
+		
+		//clear DB
+		//indexedDB.deleteDatabase('daveDB');
+		
+		var db = new Dexie("daveDB");
+		db.version(1).stores({
+			content: '++id,line1,line2,tstamp'
+		});
+
+		db.open();
+		
+		db.on("populate", function() {
+		// Init your DB with some default statuses:
+			console.log("Set initial data");
+			db.content.add({id: 1, line1: "Hello there,", line2: "Welcome to our new office.", tstamp: 0}).then(function() {
+				updateContent();
+			});
+		});
+
+		function updateContent() {
+			db.content.get(1).then(function(obj) {
+				//alert("updated");
+				console.log("line1:" + obj.line1 + " line2: "+obj.line2);
+				$('#logtext').append("UPDATE line1:" + obj.line1 + " line2: "+obj.line2 +"<br>");
+				$("#line1").val(obj.line1);
+				$("#line2").val(obj.line2); 
+				
+			}).catch(function (error) {
+				// Log or display the error.
+				console.error(error);
+				//location.reload();
+				// Notice that when using a transaction, it's enough to catch
+				// the transaction Promise instead of each db operation promise.
+			});
+		}
+		
+		function checkOnline() {
+			console.log("Checking for new data online");
+			$('#logtext').append("Checking for new data online"+"<br>");
+			$.ajax({
+                type: "POST",
+      			dataType: "jsonp",
+                url: "http://davelive.com.au/admin/t20/welcomescreen/ajax.php",
+                success: function(data){
+                    console.log("Got live data");
+					$('#logtext').append("Got live data"+"<br>");
+					db.content.get(1).then(function(obj) {
+						console.log("checking local data"+obj.tstamp);
+						$('#logtext').append("checking local data"+obj.tstamp+"<br>");
+						
+						var dbdate = new Date(obj.tstamp.replace(" ","T"));
+						console.log("convert local date");
+						$('#logtext').append("convert local date"+"<br>");
+						
+						var livedate = new Date(data['tstamp'].replace(" ","T"));
+						console.log("convert live date");
+						$('#logtext').append("convert live date"+"<br>");
+						
+						console.log("comparing dates indexdb:"+ dbdate + " livedata:" + livedate);
+						$('#logtext').append("comparing dates indexdb:"+ dbdate + " livedata:" + livedate +"<br>");
+						
+						if (dbdate < livedate) {
+							console.log("Live data is newer, so updating");
+							$('#logtext').append("Live data is newer, so updating"+"<br>");
+							db.content.update(1, {line1: data['line1'], line2: data['line2'], tstamp: data['tstamp']}).then(function() {
+								updateContent();
+							});
+						} else {
+							console.log("Local data is newer, so use local");
+							$('#logtext').append("Local data is newer, so use local"+"<br>");
+							updateContent();
+						}
+						
+					});
+					
+					
+                },
+				error:function(){
+					console.log("Error with ajax call");
+					$('#logtext').append("Error with ajax call"+"<br>");
+				}
+
+            }); // Ajax Call
+		}
+		
+		function dostuff() {
+			
+			$(".inputtext").focusout(function() {
+				var line1 = $("#line1").val();
+				var line2 = $("#line2").val();
+				
+				var currentdate = new Date();
+				var datetime = currentdate.getFullYear() + "-" + ("0" + (currentdate.getMonth()+1)).slice(-2) + "-" + ("0" + currentdate.getDate()).slice(-2) + " " + ("0" + currentdate.getHours()).slice(-2) + ":" + ("0" + currentdate.getMinutes()).slice(-2) + ":" + ("0" + currentdate.getSeconds()).slice(-2);
+				
+				db.content.update(1, {line1: line1, line2: line2, tstamp: datetime});
+				console.log("UPDATE line1:" + line1 + " line2: "+line2 + " tstamp:" + datetime);
+				$('#logtext').append("UPDATE line1:" + line1 + " line2: "+line2 + " tstamp:" + datetime+"<br>");
+			});
+			
+			$("#b_refresh").click(function() {
+				location.reload();
+			});
+			
+			$("#b_showlog").click(function() {
+				$('#logtext').toggleClass('hide');
+			});
+			
+			updateContent();
+			checkOnline();
+			
+			var currentdate = new Date();
+			var datetime = currentdate.getFullYear() + "-" + ("0" + (currentdate.getMonth()+1)).slice(-2) + "-" + ("0" + currentdate.getDate()).slice(-2) + " " + ("0" + currentdate.getHours()).slice(-2) + ":" + ("0" + currentdate.getMinutes()).slice(-2) + ":" + ("0" + currentdate.getSeconds()).slice(-2);
+			//$('#logtext').html(datetime);
+			
+		}
+	
+</script>
+
+<style>
+body, textarea, input {
+	font-family:Arial, Helvetica, sans-serif;
+}
+#maincontainer{
+	height:1080px;
+	width:1920px;
+	overflow:hidden;
+}
+#b_refresh {
+	position:absolute;
+	display:block;
+	width:100px;
+	height:100px;
+	bottom:0;
+	right:0;
+	z-index:100;
+}
+#b_showlog {
+	position:absolute;
+	display:block;
+	width:100px;
+	height:100px;
+	
+	right:0;
+	
+	z-index:100;
+}
+#logtext {
+	position:absolute;
+	top:5px;
+	right:5px;
+	font-size:10px;
+	text-align:right;
+}
+.hide {
+	display:none;
+}
+</style>
+
+</head>
+<body onLoad="dostuff();" style="background: #fff;">
+<div id="maincontainer">
+    <div>
+        <input id="line1" class="inputtext" name="line1" value="" style="background:none; font-size:110px; color:#d0004d; border:none; position:absolute; top:220px; left:57px; font-weight:bold; width:1800px;" />
+        <textarea id="line2" class="inputtext" name="line2" rows="2" style="background:none; border:none; color: #d0004d; font-size: 60px; left: 65px; position: absolute; top: 345px; width:1800px; resize:none;"></textarea>
+    </div>
+    <a href="#" id="b_refresh"></a>
+    <a href="#" id="b_showlog"></a>
+    <div id="logtext" class="hide"></div>
+    <img src="images/welcome-white.png" width="1920" height="1080">
+    </div>
+</body>
+
+</html>
