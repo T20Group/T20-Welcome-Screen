@@ -1,0 +1,260 @@
+<html>
+	<head>
+		<title>T20 Welcome Screen</title>
+		<meta name='viewport' content='width=device-width'>
+		<link href='css/style.css' rel='stylesheet'>
+		
+		<!-- jQuery library -->
+		<script src = 'js/jquery-1.8.2.min.js'></script>
+		<script src = 'js/jquery.easing-1.3.js'></script>
+		<script src = 'js/jquery.cookie.js'></script>
+<!-- 		<script src = 'js/jquery.mobile-events.min.js'></script> -->
+		
+		<!-- iosSlider plugin -->
+		<script src = 'js/jquery.iosslider.js'></script>
+		
+		<script type='text/javascript'>
+			
+			function startAnimation() {
+				var ani = document.getElementById('animation1');
+				ani.beginElement();
+		    }
+			
+			function resetVid(args) {
+				if(args.currentSlideNumber == args.data.numberOfSlides) {
+					itemNo = 1;
+				} else {
+					itemNo = args.currentSlideNumber+1;
+				}
+				console.log(itemNo);
+				$('#item'+itemNo+' video').get(0).currentTime = 0;
+			}
+    
+			$(function() {
+			
+				$('.iosSlider').iosSlider({
+					snapToChildren: true,
+					desktopClickDrag: true,
+					infiniteSlider: true,
+					navNextSelector: $('.next'),
+				    navPrevSelector: $('.prev'),
+					autoSlide:true,
+					autoSlideTimer:7000,
+					autoSlideTransTimer: 1500,
+					onSlideStart: resetVid,
+				    onSlideChange: function(args) {
+					    $('#numslide').value = args.currentSlideNumber;
+					    startAnimation();
+				    }
+					
+					
+				});
+
+				function slideComplete(args) {
+					$('.next, .prev').removeClass('unselectable');
+				    if(args.currentSlideNumber == 1) {
+				        $('.prev').addClass('unselectable');
+				    } else if(args.currentSliderOffset == args.data.sliderMax) {
+				        $('.next').addClass('unselectable');
+				    }
+				};
+			
+				$('#nav-buttom').click(function() {
+				   $('#nav-buttom, .item, #header, #nav-left, #nav-right, #div-nav-buttom, #div-svgfunc').toggleClass('showmore', '');
+				   if ( $(this).hasClass('showmore') ) {
+					   $('.iosSlider').iosSlider('lock');
+					   document.getElementById('animation3').beginElement();
+				   } else {
+					   $('.iosSlider').iosSlider('unlock');
+					   document.getElementById('animation4').beginElement();
+				   };
+			    });
+			});
+		</script>
+		
+		<style type='text/css'>
+			.more { top: 100%; background-size: cover; height: 100%; width: 1920px; position: absolute; z-index: 1900; }
+			.imagecontainer { top: 0%; height: 100%; width: 100%; position: absolute; z-index: 1000; 
+			    -webkit-background-size: cover;
+			    -moz-background-size: cover;
+			    -o-background-size: cover;
+			    background-size: cover;
+			}
+			
+			.showmore > .more { top: 0% !important; }
+			#item1 > .more { background: #FF00FF; }
+			#item2 > .more { background: #FF0000; }
+			#item3 > .more { background: #00FF00; }
+			#item4 > .more { background: #0000FF; }
+			
+			#header.showmore { top: -205px !important; }
+			#nav-left.showmore { left: -5% !important; }
+			#nav-right.showmore { right: -5% !important; }
+			#div-nav-buttom.showmore { bottom: 89% !important; }
+			#div-nav-buttom.showmore > #nav-buttom{ background: url('images/nav-top.png') no-repeat; }
+			#div-svgfunc.showmore { top: -30% !important; }
+			
+			#nav-left{
+				z-index: 100;
+				top: 50%;
+				left: 3%;
+				width: 70px;
+				height: 70px;
+				position: absolute;
+				background: url('images/nav-left.png') no-repeat;
+				opacity: 0.7;
+				-moz-border-radius: 35px; -webkit-border-radius: 35px; border-radius: 35px;
+			}
+			
+			#nav-right{
+				z-index: 100;
+				top: 50%;
+				right: 3%;
+				width: 70px;
+				height: 70px;
+				position: absolute;
+				background: url('images/nav-right.png') no-repeat;
+				opacity: 0.7;
+				-moz-border-radius: 35px; -webkit-border-radius: 35px; border-radius: 35px;
+			}
+			
+			#nav-buttom{
+				z-index: 100;
+				width: 105px;
+				height: 105px;
+				background: url('images/nav-buttom.png') no-repeat;
+				opacity: 0.85;
+				-moz-border-radius: 52px; -webkit-border-radius: 52px; border-radius: 52px;
+				-webkit-animation-duration: 5s; 
+	            animation-duration: 5s; 
+	            -webkit-animation-fill-mode: both; 
+	            animation-fill-mode: both;
+	            -webkit-animation-iteration-count: infinite;
+	            animation-iteration-count: infinite;
+	            visibility: hidden;
+			}
+			
+			#div-nav-buttom{
+				position: absolute;
+				bottom: 1%;
+				left: 47.3%;
+			}
+			
+			#div-svgfunc{
+				position: absolute;
+				top: 41%;
+				left: 13%;
+				z-index: 99;
+			}
+			
+			svg {
+				width: 1416px;
+				height: 307px;
+			}
+			
+			.anim-shape {
+				/*-webkit-transform: scale(0, 1) translate(0);
+				-ms-transform: scale(0, 1) translate(0);
+				transform: scale(0, 1) translate(0);
+				-webkit-animation: moving-panel 3s infinite alternate;
+				animation: moving-panel 3s infinite alternate;*/
+				fill: #FFFFFF;
+			}
+			
+			@keyframes moving-panel {
+				100% {
+					-webkit-transform: scale(1, 1) translate(0);
+					transform: scale(1, 1) translate(-100px, 0px);
+				}
+			}
+			
+			button{
+				border: 0;
+			}
+			
+			@-webkit-keyframes shake {
+				0%, 100% { -webkit-transform: translateY(0); } 
+				10%, 30%, 50%, 70%, 90% { -webkit-transform: translateY(-2px); } 
+				20%, 40%, 60%, 80% { -webkit-transform: translateY(2px); }
+			}
+			
+			@keyframes shake {
+				0%, 100% { transform: translateY(0); }
+				10%, 30%, 50%, 70%, 90% { transform: translateY(-2px); }
+				20%, 40%, 60%, 80% { transform: translateY(2px); }
+			}
+			
+			.shake {
+				-webkit-animation-name: shake;
+				animation-name: shake;
+			}
+			.bg-overlay {
+				background: rgba(0, 0, 0, 0) url('images/bg-overlay.png') repeat scroll 0 0;
+				overflow: hidden;
+				position: absolute;
+				width: 1920px;
+				height:1080px;
+				z-index:10;
+			}
+		</style>
+
+	</head>
+	<body>
+		<div id='container'>
+        	<div class="bg-overlay"></div>
+			<div class = 'iosSlider'>
+				
+				<div class = 'slider'>
+					<div class='item' id='item1'>
+						<video loop muted autoplay class="videobg"><source src="animation/transformer.webm" type="video/webm"></video>
+						<div class='more magic'>&nbsp;</div>
+					</div>
+					<div class='item' id='item2'>
+						<video loop muted autoplay class="videobg"><source src="animation/bigfreeze.webm" type="video/webm"></video>
+						<div class='more magic'>&nbsp;</div>
+					</div>
+					<div class='item' id='item3'>
+						<video loop muted autoplay class="videobg"><source src="animation/masterpiece.webm" type="video/webm"></video>
+						<div class='more magic'>&nbsp;</div>
+					</div>
+					<!--<div class='item' id='item4'>
+						<video loop muted autoplay class="videobg"><source src="animation/23014316.mp4" type="video/mp4"></video>
+						<div class='more magic'>&nbsp;</div>
+					</div>-->
+				</div>
+			</div>
+			<div id='header' class='magic'>
+				<div id='bigText' class='fontB'>Welcome to T20 Group</div>
+				<div id='smallText' class='fontL'>Here&rsquo;s what&rsquo;s been happening around here</div>
+			</div>
+			<button id='nav-left' class='prev unselectable disable-select magic'></button>
+			<button id='nav-right' class='next disable-select magic'></button>
+			<div id='div-nav-buttom' class='magic'><button id='nav-buttom' class='disable-select shake'></button></div>
+			<div id='div-svgfunc' class='magic'>
+				<svg id='svgfunc'>
+					<polygon opacity='0.9' id='polyAnimation' fill='#E1134A' points='1416,0 1367,49 257,49 306,0 301,0 0,301 5,301 54,252 1164,252 1115,301 1120,301 1421,0 '>
+					    <animate id='animation1' fill='freeze' attributeName='points' begin='' dur='200ms' to='861.5,0 812.5,49 811.5,49 860.5,0 855.5,0 554.5,301 559.5,301 608.5,252 609.5,252 560.5,301 565.5,301 866.5,0 ' />
+					    <animate id='animation2' fill='freeze' attributeName='points' begin='animation1.end' dur='500ms' to='1416,0 1367,49 257,49 306,0 301,0 0,301 5,301 54,252 1164,252 1115,301 1120,301 1421,0 ' />
+					    <animate id='animation3' fill='freeze' attributeName='points' begin='' dur='300ms' to='861.5,0 812.5,49 811.5,49 860.5,0 855.5,0 554.5,301 559.5,301 608.5,252 609.5,252 560.5,301 565.5,301 866.5,0 ' />
+					    <animate id='animation4' fill='freeze' attributeName='points' begin='' dur='300ms' to='1416,0 1367,49 257,49 306,0 301,0 0,301 5,301 54,252 1164,252 1115,301 1120,301 1421,0 ' />
+					</polygon>
+					<!-- Clippath  with text -->
+					<clippath id='cp-text' style="fill:#fff;">
+						<text transform='matrix(1 0 0 1 252.502 135.5)'>
+							<tspan x='0' y='0' class='fontL' font-size='50'>Our</tspan>
+							<tspan x='93.749' y='0' class='fontB' font-size='50'>&lsquo;Big Freeze at the G&rsquo;</tspan>
+							<tspan x='577.09' y='0' class='fontL' font-size='50'>campaign helped</tspan>
+						</text>
+						<text transform='matrix(1 0 0 1 271.0396 206)' class='fontL' font-size='49'>raise over $2.3 million for MND research</text>
+					</clippath> 
+					
+					<!-- Group with clippath for text-->
+					<g clip-path='url(#cp-text)'>
+					    <!-- Animated shapes inside text -->
+					    <polygon points='1371,49 252,49 49,252 1168,252 'class='anim-shape'></rect>
+					</g>
+				</svg>
+			</div>
+		</div>
+	</body>
+</html>

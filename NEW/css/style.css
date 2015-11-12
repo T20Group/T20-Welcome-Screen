@@ -1,0 +1,180 @@
+/*--------------------------------------------------------
+BEGIN THEME STYLESHEET
+--------------------------------------------------------*/
+
+@font-face {
+    font-family: "DIN Black";
+    src: url('../fonts/DIN-Black.eot');
+    src: url('../fonts/DIN-Black.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/DIN-Black.svg#DIN Black') format('svg'),
+    url('../fonts/DIN-Black.woff') format('woff'),
+    url('../fonts/DIN-Black.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "DIN Bold";
+    src: url('../fonts/DIN-Bold.eot');
+    src: url('../fonts/DIN-Bold.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/DIN-Bold.svg#DIN Bold') format('svg'),
+    url('../fonts/DIN-Bold.woff') format('woff'),
+    url('../fonts/DIN-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: "DIN Medium";
+    src: url('../fonts/DIN-Medium.eot');
+    src: url('../fonts/DIN-Medium.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/DIN-Medium.svg#DIN Medium') format('svg'),
+    url('../fonts/DIN-Medium.woff') format('woff'),
+    url('../fonts/DIN-Medium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "DIN Light";
+    src: url('../fonts/DIN-Light.eot');
+    src: url('../fonts/DIN-Light.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/DIN-Light.svg#DIN Light') format('svg'),
+    url('../fonts/DIN-Light.woff') format('woff'),
+    url('../fonts/DIN-Light.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "DIN";
+    src: url('../fonts/DIN.eot');
+    src: url('../fonts/DIN.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/DIN.svg#DIN') format('svg'),
+    url('../fonts/DIN.woff') format('woff'),
+    url('../fonts/DIN.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.fontR { font-family: "DIN", sans-serif; }
+.fontL { font-family: "DIN Light", sans-serif; }
+.fontM { font-family: "DIN Medium", sans-serif; }
+.fontB { font-family: "DIN Bold", sans-serif; font-weight: bold; }
+
+.disable-select {
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
+}
+
+html, body{
+	width: 100%;
+	height: 100%; 
+	overflow: hidden; 
+	
+}
+body{
+	margin: 0px auto;
+	padding: 0px auto;
+}
+
+#container{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.iosSlider, .videobg {
+	width: 1920px;
+}
+			
+.iosSlider .slider {
+	width: 100%;
+	height: 100%;
+}
+			
+.iosSlider .slider .item {
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	margin: 0 0 0 0;
+}
+
+.iosSlider i {
+	display:none;
+}
+
+#header{
+	position: absolute;
+	z-index: 100;
+	width: 100%;
+	height: 200px;
+	top: 0;
+	left: 0;
+	background: #e10e49;
+	color: #ffffff;
+	border-bottom: 5px solid #ffffff;
+}
+
+#bigText{
+	font-size: 64px;
+	text-align: center;
+	padding-top: 30px;
+}
+
+#smallText{
+	font-size: 29px;
+	text-align: center;
+	padding-top: 20px;
+}
+
+#headerLine{
+	width: 100%;
+	height: 5px;
+	background-color: #E4F3F6;
+}
+
+.magic {
+	-webkit-transition: all .5s ease-in-out,padding .5s ease-in-out;
+	-moz-transition: all .5s ease-in-out,padding .5s ease-in-out;
+	transition: all .5s ease-in-out,padding .5s ease-in-out;
+}
+
+.fullscreen-bg__video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+}
+
+@media (min-aspect-ratio: 16/9) {
+  .fullscreen-bg__video {
+    height: 300%;
+    top: -100%;
+  }
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .fullscreen-bg__video {
+    width: 300%;
+    left: -100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .fullscreen-bg {
+    background: url('../img/videoframe.jpg') center center / cover no-repeat;
+  }
+
+  .fullscreen-bg__video {
+    display: none;
+  }
+}
