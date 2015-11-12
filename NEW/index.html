@@ -17,8 +17,13 @@
 			
 			function startAnimation() {
 				var ani = document.getElementById('animation1');
-				ani.beginElement();
+				//ani.beginElement();
+				$("#big-headline").addClass('hide');
 		    }
+			
+			function fadeIntext() {
+				$("#big-headline").removeClass('hide');
+			}
 			
 			function resetVid(args) {
 				if(args.currentSlideNumber == args.data.numberOfSlides) {
@@ -41,11 +46,18 @@
 					autoSlide:true,
 					autoSlideTimer:7000,
 					autoSlideTransTimer: 1500,
-					onSlideStart: resetVid,
+					onSlideStart: function(args) {
+						startAnimation(args);
+						resetVid(args);
+					},
 				    onSlideChange: function(args) {
-					    $('#numslide').value = args.currentSlideNumber;
-					    startAnimation();
-				    }
+					    //$('#numslide').value = args.currentSlideNumber;
+					    //startAnimation();
+						
+				    },
+					onSlideComplete: function(args) {
+						fadeIntext();
+					}
 					
 					
 				});
@@ -196,6 +208,24 @@
 				height:1080px;
 				z-index:10;
 			}
+			
+			#big-headline {
+				position:absolute;
+				margin:0 auto;
+				top:528px;
+				z-index:100;
+				text-align:center;
+				width:920px;
+				left:500px;
+				font-size:48px;
+				color:#FFF;
+				line-height:60px;
+				
+				transition:all 0.5s ease;
+			}
+			.hide {
+				opacity:0;
+			}
 		</style>
 
 	</head>
@@ -233,28 +263,30 @@
 			<div id='div-svgfunc' class='magic'>
 				<svg id='svgfunc'>
 					<polygon opacity='0.9' id='polyAnimation' fill='#E1134A' points='1416,0 1367,49 257,49 306,0 301,0 0,301 5,301 54,252 1164,252 1115,301 1120,301 1421,0 '>
-					    <animate id='animation1' fill='freeze' attributeName='points' begin='' dur='200ms' to='861.5,0 812.5,49 811.5,49 860.5,0 855.5,0 554.5,301 559.5,301 608.5,252 609.5,252 560.5,301 565.5,301 866.5,0 ' />
-					    <animate id='animation2' fill='freeze' attributeName='points' begin='animation1.end' dur='500ms' to='1416,0 1367,49 257,49 306,0 301,0 0,301 5,301 54,252 1164,252 1115,301 1120,301 1421,0 ' />
+					    <animate id='animation1' fill='freeze' attributeName='points' begin='' dur='400ms' to='861.5,0 812.5,49 811.5,49 860.5,0 855.5,0 554.5,301 559.5,301 608.5,252 609.5,252 560.5,301 565.5,301 866.5,0 ' />
+					    <animate id='animation2' fill='freeze' attributeName='points' begin='animation1.end' dur='600ms' to='1416,0 1367,49 257,49 306,0 301,0 0,301 5,301 54,252 1164,252 1115,301 1120,301 1421,0 ' />
 					    <animate id='animation3' fill='freeze' attributeName='points' begin='' dur='300ms' to='861.5,0 812.5,49 811.5,49 860.5,0 855.5,0 554.5,301 559.5,301 608.5,252 609.5,252 560.5,301 565.5,301 866.5,0 ' />
 					    <animate id='animation4' fill='freeze' attributeName='points' begin='' dur='300ms' to='1416,0 1367,49 257,49 306,0 301,0 0,301 5,301 54,252 1164,252 1115,301 1120,301 1421,0 ' />
 					</polygon>
 					<!-- Clippath  with text -->
-					<clippath id='cp-text' style="fill:#fff;">
+					<!--<clippath id='cp-text'>
 						<text transform='matrix(1 0 0 1 252.502 135.5)'>
 							<tspan x='0' y='0' class='fontL' font-size='50'>Our</tspan>
 							<tspan x='93.749' y='0' class='fontB' font-size='50'>&lsquo;Big Freeze at the G&rsquo;</tspan>
 							<tspan x='577.09' y='0' class='fontL' font-size='50'>campaign helped</tspan>
 						</text>
 						<text transform='matrix(1 0 0 1 271.0396 206)' class='fontL' font-size='49'>raise over $2.3 million for MND research</text>
-					</clippath> 
+					</clippath> -->
 					
 					<!-- Group with clippath for text-->
-					<g clip-path='url(#cp-text)'>
-					    <!-- Animated shapes inside text -->
+					<!--<g clip-path='url(#cp-text)'>
 					    <polygon points='1371,49 252,49 49,252 1168,252 'class='anim-shape'></rect>
-					</g>
+					</g>-->
 				</svg>
-			</div>
+			</div><!-- div-svgfunc-->
+            <div id="big-headline" class="fontL">
+            	<div id="headline1">Our <span class="fontB">'Big Freeze at the G'</span> campaign helped raise over $2.3 million for MND research</div>
+            </div>
 		</div>
 	</body>
 </html>
